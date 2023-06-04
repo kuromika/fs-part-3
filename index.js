@@ -1,7 +1,6 @@
 const express = require('express');
-const res = require('express/lib/response');
 
-const phonebook = [
+let phonebook = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -45,6 +44,12 @@ app.get('/api/persons/:id', (request, response) => {
   response.json(person);
 })
 
+app.delete('/api/persons/:id', (request, response) => {
+  phonebook = phonebook.filter((person) => {
+    return person.id !== Number(request.params.id);
+  })
+  response.status(204).end();
+})
 
 
 app.get('/info', (request, response) => {
