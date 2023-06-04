@@ -28,9 +28,24 @@ const app = express();
 app.use(express.json());
 const PORT = 3001;
 
+
+
 app.get('/api/persons', (request, response) => {
   response.json(phonebook);
 })
+
+app.get('/api/persons/:id', (request, response) => {
+  const person = phonebook.find((person) => {
+    return person.id === Number(request.params.id);
+  });
+
+  if (!person) {
+    return response.status(404).end();
+  }
+  response.json(person);
+})
+
+
 
 app.get('/info', (request, response) => {
   response.send(`
