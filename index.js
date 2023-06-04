@@ -28,6 +28,9 @@ app.use(express.json());
 const PORT = 3001;
 
 
+const createId = () => {
+  return (Math.floor(Math.random() * 10000));
+}
 
 app.get('/api/persons', (request, response) => {
   response.json(phonebook);
@@ -49,6 +52,25 @@ app.delete('/api/persons/:id', (request, response) => {
     return person.id !== Number(request.params.id);
   })
   response.status(204).end();
+})
+
+app.post('/api/persons', (request, response) => {
+  if (!request.body.name || !request.body.number) {
+    return response.status(400).json({
+      error: 'Name or number missing'
+    })
+  }
+
+  const newPerson = {
+    id: createId(),
+    name: request.body.name,
+    number: request.body.number
+  }
+
+  phonebook.push(newPerson);
+
+  response.json(newPerson);
+
 })
 
 
