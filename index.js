@@ -61,6 +61,14 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
+  if (phonebook.find((person) => {
+    return person.name.toLowerCase() === request.body.name.toLowerCase();
+  })) {
+    return response.status(400).json({
+      error: 'Name already exists'
+    })
+  }
+
   const newPerson = {
     id: createId(),
     name: request.body.name,
