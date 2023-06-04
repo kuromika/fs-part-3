@@ -55,6 +55,10 @@ const createId = () => {
   return (Math.floor(Math.random() * 10000));
 }
 
+app.get('/', (request, response) => {
+  response.sendFile('/build/index.html')
+})
+
 app.get('/api/persons', (request, response) => {
   response.json(phonebook);
 })
