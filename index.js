@@ -2,6 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 
+const PORT = process.env.PORT || 3001;
+
 let phonebook = [
     { 
       "id": 1,
@@ -45,7 +47,7 @@ app.use(morgan((tokens, req, res) => {
     tokens.data(req, res)
   ].join(' ');
 }))
-const PORT = 3001;
+
 
 
 const createId = () => {
