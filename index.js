@@ -18,6 +18,7 @@ morgan.token('data', (req, res) => {
   if (req.method === 'POST') {
     return JSON.stringify(res.body);
   }
+  return '';
 });
 
 app.use(
