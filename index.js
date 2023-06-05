@@ -34,10 +34,6 @@ app.use(
   })
 );
 
-const createId = () => {
-  return Math.floor(Math.random() * 10000);
-};
-
 app.get("/", (request, response) => {
   response.sendFile("/build/index.html");
 });
@@ -48,7 +44,7 @@ app.get("/api/persons", (request, response) => {
   });
 });
 
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   Person.findById(request.params.id)
     .then((result) => {
       if (!result) {
@@ -57,7 +53,7 @@ app.get("/api/persons/:id", (request, response) => {
       response.json(result);
     })
     .catch((err) => {
-      response.status(400).send({ error: "malformated id" });
+      next(err);
     });
 });
 
@@ -106,11 +102,16 @@ app.put("/api/persons/:id", (request, response, next) => {
     });
 });
 
-app.get("/info", (request, response) => {
-  response.send(`
-  <p>Phonebook has info for ${phonebook.length} people</p>
-  <p>${new Date(Date.now()).toUTCString()}</p>
-  `);
+app.get("/info", (request, response, next) => {
+  Person.countDocuments()
+    .then((result) => {
+      response.send(`
+    <p>Phonebook has info for ${result} people</p>
+    <p>${new Date(Date.now()).toUTCString()}</p>`);
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 const unknownEndpoint = (request, response) => {
