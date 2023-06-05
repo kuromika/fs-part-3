@@ -65,6 +65,7 @@ app.delete("/api/persons/:id", (request, response) => {
   phonebook = phonebook.filter((person) => {
     return person.id !== Number(request.params.id);
   });
+
   response.status(204).end();
 });
 
