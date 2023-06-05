@@ -89,6 +89,23 @@ app.post("/api/persons", (request, response) => {
   });
 });
 
+app.put("/api/persons/:id", (request, response, next) => {
+  const person = {
+    name: request.body.name,
+    number: request.body.number,
+  };
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then((result) => {
+      if (!result) {
+        return response.status(404).end();
+      }
+      response.json(result);
+    })
+    .catch((error) => {
+      next(error);
+    });
+});
+
 app.get("/info", (request, response) => {
   response.send(`
   <p>Phonebook has info for ${phonebook.length} people</p>
